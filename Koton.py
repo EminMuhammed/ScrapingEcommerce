@@ -1,9 +1,5 @@
 import re
-from ScrapingEcommerce.Helpers.ScrapeHelpers import *
-
-
-# regex: .*/p/.*
-# 24 ürün
+from Helpers.ScrapeHelpers import *
 
 
 def collect_url(base_url, page_number):
@@ -62,4 +58,4 @@ def main(base_url, page_number, excel_name):
 base_url = "https://www.koton.com/tr/erkek/giyim/alt-giyim/jean-pantolon/c/M01-C01-N01-AK102-K100044?q=%3Arelevance" \
            "&psize=192&page="
 
-main(base_url, 1, "koton3")
+main(base_url, 1, "koton")

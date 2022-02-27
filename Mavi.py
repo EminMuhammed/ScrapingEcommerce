@@ -1,5 +1,4 @@
-from ScrapingEcommerce.Helpers.ScrapeHelpers import *
-
+from Helpers.ScrapeHelpers import *
 
 
 def parse_column_product(soup):
@@ -50,7 +49,6 @@ def parse_content(url_list):
     return product_content
 
 
-
 def main(base_url, page_number, excel_name):
     product_list = collect_url(base_url, page_number)
     print("total product: ", len(product_list))
@@ -62,4 +60,4 @@ def main(base_url, page_number, excel_name):
 
 base_url = "https://www.mavi.com/erkek/jean/c/2?page="
 
-main(base_url, 1, "mavi3")
+main(base_url, 1, "mavi")

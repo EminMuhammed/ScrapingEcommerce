@@ -1,4 +1,4 @@
-from ScrapingEcommerce.Helpers.ScrapeHelpers import *
+from Helpers.ScrapeHelpers import *
 
 
 def parse_column_product(soup):
@@ -66,4 +66,4 @@ def main(base_url, page_number, excel_name):
 
 base_url = "https://www.defacto.com.tr/erkek-denim-pantolon?page="
 
-main(base_url, 1, "defacto3")
+main(base_url, 1, "defacto")

@@ -1,4 +1,4 @@
-from ScrapingEcommerce.Helpers.ScrapeHelpers import *
+from Helpers.ScrapeHelpers import *
 
 
 def parse_column_product(soup):
@@ -29,7 +29,6 @@ def get_unique_url(product_list):
     df = df.rename(columns={0: "data"})
     df = df["data"].unique()
     product_url_ful_list = ["https://www.avva.com.tr" + i for i in df]
-
     return product_url_ful_list
 
 
