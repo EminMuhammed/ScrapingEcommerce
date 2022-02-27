@@ -1,18 +1,5 @@
-import pandas as pd
-import re
-import requests
-from bs4 import BeautifulSoup
+from ScrapingEcommerce.Helpers.ScrapeHelpers import *
 
-base_url = "https://www.mavi.com/erkek/jean/c/2?page="
-
-
-# regex: .*/p/.*
-# 24 ürün
-
-def get_content(url):
-    r = requests.get(url)
-    soup = BeautifulSoup(r.content, "lxml")
-    return soup
 
 
 def parse_column_product(soup):
@@ -63,13 +50,16 @@ def parse_content(url_list):
     return product_content
 
 
-def save_excel(data):
-    df = pd.DataFrame(data)
-    df.to_excel("Scraping/Mavi/Veriler/Mavi_erkek_jeans.xlsx")
+
+def main(base_url, page_number, excel_name):
+    product_list = collect_url(base_url, page_number)
+    print("total product: ", len(product_list))
+    url_list = get_unique_url(product_list)
+    print("unique product: ", len(url_list))
+    product_content = parse_content(url_list[:5])
+    save_excel(product_content, excel_name)
 
 
-product_list = collect_url(base_url, 1)
-url_list = get_unique_url(product_list)
-len(url_list)
-product_content = parse_content(url_list)
-save_excel(product_content)
+base_url = "https://www.mavi.com/erkek/jean/c/2?page="
+
+main(base_url, 1, "mavi3")

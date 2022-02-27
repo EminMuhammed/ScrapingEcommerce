@@ -1,22 +1,24 @@
-import re
 from ScrapingEcommerce.Helpers.ScrapeHelpers import *
 
 
-# regex: .*/p/.*
-# 24 ürün
+def parse_column_product(soup):
+    products_area = soup.find("div", attrs={"class": "ProductListContent"})
+    a_tags = products_area.find_all("div", attrs={"class": "ItemOrj col-3"})
+
+    return a_tags
 
 
 def collect_url(base_url, page_number):
     product_list = []
-    for i in range(0, page_number + 1):
+    for i in range(1, page_number + 1):
         url = base_url + str(i)
         print(url)
         soup = get_content(url)
-        product_column = soup.find("div", attrs={"class": "product-list-container"})
-        a_tags = product_column.find_all("a")
+        a_tags = parse_column_product(soup)
 
-        for a in a_tags:
-            product_list.append(re.findall(".*/p/.*", a.get("href")))
+        for i in a_tags:
+            print(i.a.get("href"))
+            product_list.append(i.a.get("href"))
 
     return product_list
 
@@ -26,7 +28,7 @@ def get_unique_url(product_list):
     df = df.dropna().reset_index()
     df = df.rename(columns={0: "data"})
     df = df["data"].unique()
-    product_url_ful_list = ["https://www.koton.com" + i for i in df]
+    product_url_ful_list = ["https://www.avva.com.tr" + i for i in df]
 
     return product_url_ful_list
 
@@ -36,12 +38,13 @@ def parse_content(url_list):
     for url in url_list:
         print(url)
         soup = get_content(url)
-        title = soup.find("h1").text.strip()
-        if soup.find("span", attrs={"class": "newPrice"}) is not None:
-            price = soup.find("span", attrs={"class": "newPrice"}).text.strip()
-        elif soup.find("span", attrs={"class": "normalPrice"}) is not None:
-            price = soup.find("span", attrs={"class": "normalPrice"}).text.strip()
 
+        title = soup.find("h1").text.strip().split("\n")[0]
+        try:
+            price = soup.find("div", attrs={"class": "Formline IndirimliFiyatContent"}).find("span", attrs={
+                "class": "spanFiyat"}).text.strip()
+        except:
+            price = None
         print(title)
         print(price)
 
@@ -59,7 +62,6 @@ def main(base_url, page_number, excel_name):
     save_excel(product_content, excel_name)
 
 
-base_url = "https://www.koton.com/tr/erkek/giyim/alt-giyim/jean-pantolon/c/M01-C01-N01-AK102-K100044?q=%3Arelevance" \
-           "&psize=192&page="
+base_url = "https://www.avva.com.tr/erkek-jean?sayfa="
 
-main(base_url, 1, "koton3")
+main(base_url, 1, "avva")
